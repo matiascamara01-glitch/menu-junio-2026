@@ -1,0 +1,944 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menú Junio 2026 — Ru & Maty</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F7F3ED;
+    --warm: #EDE5D8;
+    --terracotta: #C4704A;
+    --terra-light: #E89A72;
+    --terra-dark: #8B4A28;
+    --sage: #7A9E7E;
+    --sage-light: #A8C5AC;
+    --charcoal: #2C2C2C;
+    --mid: #6B6B6B;
+    --light: #9A9A9A;
+    --white: #FFFFFF;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--cream); font-family: 'DM Sans', sans-serif; color: var(--charcoal); min-height: 100vh; }
+
+  .header { background: var(--charcoal); color: var(--cream); padding: 48px 40px 36px; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; top: -60px; right: -60px; width: 300px; height: 300px; border-radius: 50%; background: var(--terracotta); opacity: 0.15; }
+  .header::after { content: ''; position: absolute; bottom: -80px; left: 20%; width: 200px; height: 200px; border-radius: 50%; background: var(--sage); opacity: 0.12; }
+  .header-inner { position: relative; z-index: 1; max-width: 960px; margin: 0 auto; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 5vw, 3.5rem); font-weight: 900; line-height: 1.1; letter-spacing: -0.02em; }
+  .header h1 span { color: var(--terra-light); }
+  .header-sub { margin-top: 12px; font-size: 0.95rem; color: var(--light); font-weight: 300; letter-spacing: 0.05em; text-transform: uppercase; }
+  .header-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .pill { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: var(--cream); padding: 4px 14px; border-radius: 20px; font-size: 0.78rem; }
+  .pill.green { background: rgba(122,158,126,0.25); border-color: var(--sage); color: var(--sage-light); }
+  .pill.orange { background: rgba(196,112,74,0.25); border-color: var(--terracotta); color: var(--terra-light); }
+
+  .kcal-banner { background: linear-gradient(135deg, #2C2C2C 0%, #3a3020 100%); border-top: 1px solid rgba(255,255,255,0.08); padding: 14px 40px; }
+  .kcal-banner-inner { max-width: 960px; margin: 0 auto; display: flex; gap: 24px; flex-wrap: wrap; align-items: center; }
+  .kcal-person { display: flex; align-items: center; gap: 10px; }
+  .kcal-name { font-size: 0.78rem; color: var(--light); text-transform: uppercase; letter-spacing: 0.06em; }
+  .kcal-range { font-size: 0.9rem; font-weight: 600; color: var(--terra-light); }
+  .kcal-sep { color: rgba(255,255,255,0.15); font-size: 1.2rem; }
+  .kcal-note { font-size: 0.75rem; color: var(--light); font-style: italic; margin-left: auto; }
+
+  .tabs-wrapper { background: var(--charcoal); padding: 0 40px; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .tabs { display: flex; max-width: 960px; margin: 0 auto; }
+  .tab-btn { background: none; border: none; cursor: pointer; color: var(--light); font-family: 'DM Sans', sans-serif; font-size: 0.85rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 16px 24px; border-bottom: 3px solid transparent; transition: all 0.2s; }
+  .tab-btn:hover { color: var(--cream); }
+  .tab-btn.active { color: var(--terra-light); border-bottom-color: var(--terracotta); }
+
+  .main { max-width: 960px; margin: 0 auto; padding: 32px 40px 80px; }
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  .week-label { font-family: 'Playfair Display', serif; color: var(--terracotta); margin: 32px 0 16px; padding-bottom: 8px; border-bottom: 2px solid var(--warm); text-transform: uppercase; letter-spacing: 0.08em; font-size: 0.75rem; font-weight: 700; }
+
+  .day-card { background: var(--white); border-radius: 12px; margin-bottom: 10px; overflow: hidden; border: 1px solid var(--warm); transition: box-shadow 0.2s; }
+  .day-card:hover { box-shadow: 0 4px 20px rgba(0,0,0,0.07); }
+  .day-card.weekend { border-color: var(--terra-light); background: linear-gradient(135deg, #FFFAF7 0%, #FFF8F3 100%); }
+
+  .day-header { display: flex; align-items: center; gap: 12px; padding: 12px 18px; background: var(--warm); }
+  .day-card.weekend .day-header { background: #F5DDD0; }
+  .day-name { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 1rem; min-width: 110px; }
+  .day-date { font-size: 0.78rem; color: var(--mid); }
+  .day-badge { margin-left: auto; font-size: 0.7rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; padding: 3px 10px; border-radius: 10px; }
+  .badge-weekend { background: var(--terracotta); color: white; }
+  .badge-repeat { background: var(--sage-light); color: #2a4a2e; }
+  .badge-maty-out { background: #e8e0d5; color: var(--mid); }
+
+  .day-body { padding: 10px 18px 14px; }
+
+  .meal-row { display: grid; grid-template-columns: 80px 1fr auto; gap: 10px; align-items: start; padding: 9px 0; border-bottom: 1px dashed #EDE5D8; }
+  .meal-row:last-child { border-bottom: none; }
+
+  .meal-type { font-size: 0.7rem; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 3px; display: flex; align-items: flex-start; gap: 5px; }
+  .meal-type.lunch { color: var(--terracotta); }
+  .meal-type.dinner { color: var(--sage); }
+  .meal-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 2px; }
+  .lunch .meal-dot { background: var(--terracotta); }
+  .dinner .meal-dot { background: var(--sage); }
+
+  .meal-info { }
+  .meal-name { font-size: 0.91rem; font-weight: 500; color: var(--charcoal); line-height: 1.3; }
+  .meal-note { font-size: 0.74rem; color: var(--light); margin-top: 2px; font-style: italic; }
+
+  .kcal-badge { display: flex; flex-direction: column; align-items: flex-end; gap: 3px; flex-shrink: 0; padding-top: 2px; }
+  .kcal-m { background: #FFF0E8; color: var(--terra-dark); font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
+  .kcal-r { background: #EEF5EF; color: #2a5a2e; font-size: 0.7rem; font-weight: 600; padding: 2px 8px; border-radius: 8px; white-space: nowrap; }
+
+  /* LISTA DE COMPRAS */
+  .shopping-note { font-size: 0.82rem; color: var(--light); margin-bottom: 20px; font-style: italic; }
+  .shopping-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; }
+  .shop-category { background: var(--white); border: 1px solid var(--warm); border-radius: 12px; overflow: hidden; }
+  .shop-cat-header { padding: 12px 16px; display: flex; align-items: center; gap: 10px; }
+  .shop-cat-icon { font-size: 1.2rem; }
+  .shop-cat-title { font-family: 'Playfair Display', serif; font-weight: 700; font-size: 0.9rem; }
+  .shop-items { padding: 4px 0 12px; }
+  .shop-item { display: flex; justify-content: space-between; align-items: baseline; padding: 6px 16px; font-size: 0.84rem; border-bottom: 1px solid var(--cream); gap: 8px; }
+  .shop-item:last-child { border-bottom: none; }
+  .shop-item-name { color: var(--charcoal); flex: 1; }
+  .shop-item-qty { font-weight: 600; color: var(--terracotta); font-size: 0.82rem; white-space: nowrap; }
+
+  /* TIPS */
+  .tips-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px; }
+  .tip-card { background: var(--white); border: 1px solid var(--warm); border-radius: 12px; padding: 20px; }
+  .tip-card h3 { font-family: 'Playfair Display', serif; font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; color: var(--terracotta); }
+  .tip-card ul { padding-left: 16px; }
+  .tip-card li { font-size: 0.84rem; line-height: 1.6; color: var(--mid); margin-bottom: 4px; }
+
+  @media (max-width: 600px) {
+    .header { padding: 32px 20px 28px; }
+    .kcal-banner { padding: 12px 20px; }
+    .main { padding: 20px 16px 60px; }
+    .tabs-wrapper { padding: 0 16px; }
+    .tab-btn { padding: 14px 10px; font-size: 0.72rem; }
+    .shopping-grid, .tips-grid { grid-template-columns: 1fr; }
+    .meal-row { grid-template-columns: 70px 1fr; }
+    .kcal-badge { display: none; }
+    .kcal-note { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <h1>Menú <span>Junio–Julio</span> 2026</h1>
+    <div class="header-sub">Ru &amp; Maty · 5 Jun → 1 Jul · 2 personas</div>
+    <div class="header-pills">
+      <span class="pill orange">🥩 Énfasis en vacuno</span>
+      <span class="pill green">🫘 Lentejas &amp; porotos alubia</span>
+      <span class="pill">🔁 Meal prep 2 días</span>
+      <span class="pill">🔥 Déficit moderado · sin hambre</span>
+    </div>
+  </div>
+</div>
+
+<div class="kcal-banner">
+  <div class="kcal-banner-inner">
+    <div class="kcal-person">
+      <span class="kcal-name">🧔 Maty</span>
+      <span class="kcal-range">1.800–2.000 kcal/día</span>
+    </div>
+    <span class="kcal-sep">|</span>
+    <div class="kcal-person">
+      <span class="kcal-name">👩 Ru</span>
+      <span class="kcal-range">1.500–1.700 kcal/día</span>
+    </div>
+    <span class="kcal-note">Las kcal de cada plato son por porción individual estimada · almuerzo+cena ≈ 1.000–1.200 kcal</span>
+  </div>
+</div>
+
+<div class="tabs-wrapper">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="showTab('menu',this)">📅 Menú</button>
+    <button class="tab-btn" onclick="showTab('compras',this)">🛒 Lista de compras</button>
+    <button class="tab-btn" onclick="showTab('consejos',this)">💡 Consejos</button>
+  </div>
+</div>
+
+<div class="main">
+
+<!-- ===== MENÚ ===== -->
+<div id="tab-menu" class="tab-panel active">
+
+<p style="font-size:0.8rem;color:var(--light);margin-bottom:4px;font-style:italic;">🧔 Maty &nbsp;|&nbsp; 👩 Ru — calorías por porción individual</p>
+
+<!-- SEMANA 1 -->
+<div class="week-label">Semana 1 — 5 al 8 de junio</div>
+
+<div class="day-card weekend">
+  <div class="day-header"><span class="day-name">Viernes</span><span class="day-date">5 jun</span><span class="day-badge badge-weekend">Inicio 🎉</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Bifes de chorizo al air fryer con ensalada mixta y papas al horno <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 620 kcal · 👩 520 kcal)</span></div>
+      <div class="meal-note">Papas con cáscara, ensalada de tomate + morrón + choclo</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 620 kcal</span><span class="kcal-r">👩 520 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Lentejas guisadas con panceta y zanahoria <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 520 kcal · 👩 440 kcal)</span></div>
+      <div class="meal-note">Guiso abundante y saciante. Preparar cantidad doble para el sábado.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 520 kcal</span><span class="kcal-r">👩 440 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card weekend">
+  <div class="day-header"><span class="day-name">Sábado</span><span class="day-date">6 jun</span><span class="day-badge badge-weekend">Fin de semana</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Lentejas guisadas (repetición viernes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 520 kcal · 👩 440 kcal)</span></div>
+      <div class="meal-note">Los guisos mejoran de un día al otro</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 520 kcal</span><span class="kcal-r">👩 440 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Asado de tira al air fryer grill con ensalada y papas rústicas <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 680 kcal · 👩 560 kcal)</span></div>
+      <div class="meal-note">Plato estrella del finde. Papas con cáscara al horno.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 680 kcal</span><span class="kcal-r">👩 560 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card weekend">
+  <div class="day-header"><span class="day-name">Domingo</span><span class="day-date">7 jun</span><span class="day-badge badge-weekend">Fin de semana</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Pastel de papa con carne picada magra <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 600 kcal · 👩 500 kcal)</span></div>
+      <div class="meal-note">Clásico dominguero. Puré arriba gratinado con caldo.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 600 kcal</span><span class="kcal-r">👩 500 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Pastel de papa (repetición almuerzo) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 480 kcal · 👩 400 kcal)</span></div>
+      <div class="meal-note">Porción más chica para la cena</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 480 kcal</span><span class="kcal-r">👩 400 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEMANA 2 -->
+<div class="week-label">Semana 2 — 8 al 15 de junio</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Lunes</span><span class="day-date">8 jun</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Milanesas de carne vacuna al air fryer con puré de papa <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 620 kcal · 👩 520 kcal)</span></div>
+      <div class="meal-note">Puré liviano con caldo de pollo en lugar de manteca</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 620 kcal</span><span class="kcal-r">👩 520 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Estofado de paleta con papa y morrón <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 550 kcal · 👩 460 kcal)</span></div>
+      <div class="meal-note">Preparar cantidad doble para el martes</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 550 kcal</span><span class="kcal-r">👩 460 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Martes</span><span class="day-date">9 jun</span><span class="day-badge badge-repeat">Meal prep</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Milanesas de carne (repetición lunes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 620 kcal · 👩 520 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 620 kcal</span><span class="kcal-r">👩 520 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Estofado de paleta (repetición lunes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 550 kcal · 👩 460 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 550 kcal</span><span class="kcal-r">👩 460 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Miércoles</span><span class="day-date">10 jun</span><span class="day-badge badge-maty-out">Maty almuerza afuera</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Arroz con pollo a la española <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(👩 480 kcal)</span></div>
+      <div class="meal-note">Solo para Ru. Pollo, morrón, tomate, pimentón.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-r">👩 480 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Porotos alubia guisados con chorizo colorado y morrón <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 530 kcal · 👩 450 kcal)</span></div>
+      <div class="meal-note">Preparar doble para el jueves</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 530 kcal</span><span class="kcal-r">👩 450 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Jueves</span><span class="day-date">11 jun</span><span class="day-badge badge-repeat">Meal prep</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Arroz con pollo (repetición miércoles) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 500 kcal · 👩 480 kcal)</span></div>
+      <div class="meal-note">Para los 2</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 500 kcal</span><span class="kcal-r">👩 480 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Porotos alubia guisados (repetición miércoles) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 530 kcal · 👩 450 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 530 kcal</span><span class="kcal-r">👩 450 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Viernes</span><span class="day-date">12 jun</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Hamburguesas caseras de vacuno al air fryer con ensalada abundante <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 540 kcal · 👩 460 kcal)</span></div>
+      <div class="meal-note">Sin pan o con pan integral. Tomate + choclo + morrón.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 540 kcal</span><span class="kcal-r">👩 460 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Pastas con salsa bolognesa casera <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 580 kcal · 👩 490 kcal)</span></div>
+      <div class="meal-note">Carne picada magra. Preparar doble para el sábado.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 580 kcal</span><span class="kcal-r">👩 490 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card weekend">
+  <div class="day-header"><span class="day-name">Sábado</span><span class="day-date">13 jun</span><span class="day-badge badge-weekend">Fin de semana</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Pastas con bolognesa (repetición viernes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 580 kcal · 👩 490 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 580 kcal</span><span class="kcal-r">👩 490 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Matambre a la pizza al horno <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 620 kcal · 👩 520 kcal)</span></div>
+      <div class="meal-note">Con salsa fileto y mozzarella. Clásico de finde.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 620 kcal</span><span class="kcal-r">👩 520 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card weekend">
+  <div class="day-header"><span class="day-name">Domingo</span><span class="day-date">14 jun</span><span class="day-badge badge-weekend">Fin de semana</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Pollo entero al horno con papas y zanahoria <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 580 kcal · 👩 490 kcal)</span></div>
+      <div class="meal-note">Clásico dominguero. Rinde para la cena también.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 580 kcal</span><span class="kcal-r">👩 490 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Pollo al horno (repetición — porción liviana) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 460 kcal · 👩 380 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 460 kcal</span><span class="kcal-r">👩 380 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEMANA 3 -->
+<div class="week-label">Semana 3 — 15 al 22 de junio</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Lunes</span><span class="day-date">15 jun</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Tapa de asado al horno con papas rústicas <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 640 kcal · 👩 530 kcal)</span></div>
+      <div class="meal-note">Corte económico y sabroso. Papas con cáscara.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 640 kcal</span><span class="kcal-r">👩 530 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Sopa de verduras con caldo de pollo y fideos <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 380 kcal · 👩 320 kcal)</span></div>
+      <div class="meal-note">Zanahoria, papa, morrón, apio. Cena liviana y saciante.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 380 kcal</span><span class="kcal-r">👩 320 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Martes</span><span class="day-date">16 jun</span><span class="day-badge badge-repeat">Meal prep</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Tapa de asado (repetición lunes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 640 kcal · 👩 530 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 640 kcal</span><span class="kcal-r">👩 530 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Sopa de verduras (repetición lunes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 380 kcal · 👩 320 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 380 kcal</span><span class="kcal-r">👩 320 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Miércoles</span><span class="day-date">17 jun</span><span class="day-badge badge-maty-out">Maty almuerza afuera</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Ensalada de arroz con atún y verduras <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(👩 420 kcal)</span></div>
+      <div class="meal-note">Solo para Ru. Frío, rápido, fresco.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-r">👩 420 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Milanesas de carne napolitana al horno <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 620 kcal · 👩 520 kcal)</span></div>
+      <div class="meal-note">Con salsa fileto y mozzarella. Ensalada de acompañamiento. Doble para el jueves.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 620 kcal</span><span class="kcal-r">👩 520 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Jueves</span><span class="day-date">18 jun</span><span class="day-badge badge-repeat">Meal prep</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Milanesas napolitanas (repetición miércoles) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 620 kcal · 👩 520 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 620 kcal</span><span class="kcal-r">👩 520 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Lentejas guisadas con espinaca y panceta <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 500 kcal · 👩 420 kcal)</span></div>
+      <div class="meal-note">Variante verde de las lentejas. Preparar doble para el viernes.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 500 kcal</span><span class="kcal-r">👩 420 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Viernes</span><span class="day-date">19 jun</span><span class="day-badge badge-repeat">Meal prep</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Lentejas con espinaca (repetición jueves) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 500 kcal · 👩 420 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 500 kcal</span><span class="kcal-r">👩 420 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Pastas con albóndigas de carne vacuna <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 590 kcal · 👩 500 kcal)</span></div>
+      <div class="meal-note">Albóndigas caseras de carne picada magra en salsa fileto.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 590 kcal</span><span class="kcal-r">👩 500 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card weekend">
+  <div class="day-header"><span class="day-name">Sábado</span><span class="day-date">20 jun</span><span class="day-badge badge-weekend">Fin de semana</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Pastas con albóndigas (repetición viernes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 590 kcal · 👩 500 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 590 kcal</span><span class="kcal-r">👩 500 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Empanadas al horno de carne cortada a cuchillo <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 660 kcal · 👩 560 kcal)</span></div>
+      <div class="meal-note">Relleno con cebolla, morrón, huevo duro, aceitunas. Plato de finde.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 660 kcal</span><span class="kcal-r">👩 560 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card weekend">
+  <div class="day-header"><span class="day-name">Domingo</span><span class="day-date">21 jun</span><span class="day-badge badge-weekend">Fin de semana</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Costillas de cerdo al horno con batata y morrón <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 620 kcal · 👩 520 kcal)</span></div>
+      <div class="meal-note">Marinadas con pimentón y ajo. Finde más elaborado.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 620 kcal</span><span class="kcal-r">👩 520 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Costillas de cerdo (repetición almuerzo — porción más chica) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 480 kcal · 👩 400 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 480 kcal</span><span class="kcal-r">👩 400 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEMANA 4 -->
+<div class="week-label">Semana 4 — 22 al 29 de junio</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Lunes</span><span class="day-date">22 jun</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Bifes de cuadril al air fryer con ensalada de tomate, morrón y choclo <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 560 kcal · 👩 470 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 560 kcal</span><span class="kcal-r">👩 470 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Porotos alubia guisados con espinaca y panceta <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 510 kcal · 👩 430 kcal)</span></div>
+      <div class="meal-note">Preparar doble para el martes</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 510 kcal</span><span class="kcal-r">👩 430 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Martes</span><span class="day-date">23 jun</span><span class="day-badge badge-repeat">Meal prep</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Bifes de cuadril (repetición lunes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 560 kcal · 👩 470 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 560 kcal</span><span class="kcal-r">👩 470 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Porotos alubia guisados (repetición lunes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 510 kcal · 👩 430 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 510 kcal</span><span class="kcal-r">👩 430 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Miércoles</span><span class="day-date">24 jun</span><span class="day-badge badge-maty-out">Maty almuerza afuera</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Zapallito relleno con carne picada al horno <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(👩 430 kcal)</span></div>
+      <div class="meal-note">Solo para Ru. Ideal para usar zapallito.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-r">👩 430 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Milanesas de carne con batata al horno <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 600 kcal · 👩 500 kcal)</span></div>
+      <div class="meal-note">Preparar doble para el jueves</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 600 kcal</span><span class="kcal-r">👩 500 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Jueves</span><span class="day-date">25 jun</span><span class="day-badge badge-repeat">Meal prep</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Milanesas de carne con batata (repetición) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 600 kcal · 👩 500 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 600 kcal</span><span class="kcal-r">👩 500 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Lentejas guisadas con chorizo colorado <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 520 kcal · 👩 440 kcal)</span></div>
+      <div class="meal-note">Preparar doble para el viernes</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 520 kcal</span><span class="kcal-r">👩 440 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Viernes</span><span class="day-date">26 jun</span><span class="day-badge badge-repeat">Meal prep</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Lentejas con chorizo (repetición jueves) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 520 kcal · 👩 440 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 520 kcal</span><span class="kcal-r">👩 440 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Pastas con salsa fileto y carne picada salteada <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 570 kcal · 👩 480 kcal)</span></div>
+      <div class="meal-note">Preparar doble para el sábado</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 570 kcal</span><span class="kcal-r">👩 480 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card weekend">
+  <div class="day-header"><span class="day-name">Sábado</span><span class="day-date">27 jun</span><span class="day-badge badge-weekend">Fin de semana</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Pastas con carne (repetición viernes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 570 kcal · 👩 480 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 570 kcal</span><span class="kcal-r">👩 480 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Vacío al horno con papas y ensalada mixta <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 650 kcal · 👩 540 kcal)</span></div>
+      <div class="meal-note">Corte noble de finde. Bajo en grasa, muy sabroso.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 650 kcal</span><span class="kcal-r">👩 540 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card weekend">
+  <div class="day-header"><span class="day-name">Domingo</span><span class="day-date">28 jun</span><span class="day-badge badge-weekend">Fin de semana</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Vacío al horno (repetición sábado) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 650 kcal · 👩 540 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 650 kcal</span><span class="kcal-r">👩 540 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Pizza casera con mozzarella, jamón y morrón <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 620 kcal · 👩 520 kcal)</span></div>
+      <div class="meal-note">Masa casera o base comprada. Cena de domingo relajada.</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 620 kcal</span><span class="kcal-r">👩 520 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- CIERRE -->
+<div class="week-label">Cierre — 29 jun al 1 de julio</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Lunes</span><span class="day-date">29 jun</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Porotos alubia guisados con chorizo y zanahoria <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 530 kcal · 👩 450 kcal)</span></div>
+      <div class="meal-note">Preparar doble para el martes</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 530 kcal</span><span class="kcal-r">👩 450 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Bifes de chorizo al air fryer con ensalada abundante <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 560 kcal · 👩 470 kcal)</span></div>
+      <div class="meal-note">Cierre de mes con el clásico vacuno</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 560 kcal</span><span class="kcal-r">👩 470 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Martes</span><span class="day-date">30 jun</span><span class="day-badge badge-repeat">Meal prep</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Porotos alubia (repetición lunes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 530 kcal · 👩 450 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 530 kcal</span><span class="kcal-r">👩 450 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Estofado de carne con papa y morrón <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 550 kcal · 👩 460 kcal)</span></div>
+      <div class="meal-note">Preparar doble para el 1 de julio</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 550 kcal</span><span class="kcal-r">👩 460 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+<div class="day-card">
+  <div class="day-header"><span class="day-name">Miércoles</span><span class="day-date">1 jul</span><span class="day-badge badge-maty-out">Maty almuerza afuera</span></div>
+  <div class="day-body">
+    <div class="meal-row">
+      <div class="meal-type lunch"><div class="meal-dot"></div>Almuerzo</div>
+      <div class="meal-info"><div class="meal-name">Estofado de carne (repetición, solo Ru) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(👩 460 kcal)</span></div>
+      
+</div>
+      <div class="kcal-badge"><span class="kcal-r">👩 460 kcal</span></div>
+    </div>
+    <div class="meal-row">
+      <div class="meal-type dinner"><div class="meal-dot"></div>Cena</div>
+      <div class="meal-info"><div class="meal-name">Estofado de carne (para los 2 — última cena del mes) <span style="font-size:0.78rem;font-weight:400;color:var(--mid);font-style:normal;">(🧔 550 kcal · 👩 460 kcal)</span></div>
+      <div class="meal-note">¡Arrancan julio con todo! 🎉</div>
+</div>
+      <div class="kcal-badge"><span class="kcal-m">🧔 550 kcal</span><span class="kcal-r">👩 460 kcal</span></div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /tab-menu -->
+
+<!-- ===== COMPRAS ===== -->
+<div id="tab-compras" class="tab-panel">
+<p class="shopping-note">Cantidades revisadas para 2 personas · 5 jun → 1 jul (27 días) · con meal prep x2 · miércoles Maty almuerza afuera · margen de 10% por si algunos fines de semana comen en casa.</p>
+
+<div class="shopping-grid">
+
+  <div class="shop-category">
+    <div class="shop-cat-header" style="background:#FFF0E8;">
+      <span class="shop-cat-icon">🥩</span><span class="shop-cat-title" style="color:var(--terra-dark)">Carnes vacunas</span>
+    </div>
+    <div class="shop-items">
+      <div class="shop-item"><span class="shop-item-name">Carne picada magra</span><span class="shop-item-qty">2,5 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Bifes de chorizo</span><span class="shop-item-qty">1,2 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Bifes de cuadril</span><span class="shop-item-qty">800 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Asado de tira</span><span class="shop-item-qty">1 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Tapa de asado</span><span class="shop-item-qty">1 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Paleta para estofar</span><span class="shop-item-qty">1,2 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Vacío</span><span class="shop-item-qty">1,2 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Matambre</span><span class="shop-item-qty">700 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Peceto (milanesas)</span><span class="shop-item-qty">1,5 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">TOTAL aprox.</span><span class="shop-item-qty">~11 kg</span></div>
+    </div>
+  </div>
+
+  <div class="shop-category">
+    <div class="shop-cat-header" style="background:#EEF5EF;">
+      <span class="shop-cat-icon">🍗</span><span class="shop-cat-title" style="color:#2a5a2e">Pollo</span>
+    </div>
+    <div class="shop-items">
+      <div class="shop-item"><span class="shop-item-name">Pechuga entera</span><span class="shop-item-qty">600 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Muslos / cuartos</span><span class="shop-item-qty">800 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Pollo entero</span><span class="shop-item-qty">1 unidad (~1,8 kg)</span></div>
+      <div class="shop-item"><span class="shop-item-name">TOTAL aprox.</span><span class="shop-item-qty">~3,2 kg</span></div>
+    </div>
+  </div>
+
+  <div class="shop-category">
+    <div class="shop-cat-header" style="background:#FFF5EE;">
+      <span class="shop-cat-icon">🐷</span><span class="shop-cat-title" style="color:#7a3a18">Cerdo</span>
+    </div>
+    <div class="shop-items">
+      <div class="shop-item"><span class="shop-item-name">Costillas de cerdo</span><span class="shop-item-qty">1,2 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cerdo para wok (tiras)</span><span class="shop-item-qty">400 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Chorizo colorado</span><span class="shop-item-qty">8 unidades</span></div>
+      <div class="shop-item"><span class="shop-item-name">Panceta ahumada</span><span class="shop-item-qty">400 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Jamón cocido</span><span class="shop-item-qty">250 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">TOTAL aprox.</span><span class="shop-item-qty">~3,4 kg</span></div>
+    </div>
+  </div>
+
+  <div class="shop-category">
+    <div class="shop-cat-header" style="background:#F5F0FF;">
+      <span class="shop-cat-icon">🥔</span><span class="shop-cat-title" style="color:#4a3a7a">Carbohidratos</span>
+    </div>
+    <div class="shop-items">
+      <div class="shop-item"><span class="shop-item-name">Papas</span><span class="shop-item-qty">6 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Batata</span><span class="shop-item-qty">2 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Arroz largo fino</span><span class="shop-item-qty">2,5 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Tallarines / spaghetti</span><span class="shop-item-qty">2 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Fideos para sopa</span><span class="shop-item-qty">500 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Lentejas secas</span><span class="shop-item-qty">1,5 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Porotos alubia secos</span><span class="shop-item-qty">1,2 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Harina 000 (pizza)</span><span class="shop-item-qty">1 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Tapas de empanada horno</span><span class="shop-item-qty">3 paquetes (48 u)</span></div>
+    </div>
+  </div>
+
+  <div class="shop-category">
+    <div class="shop-cat-header" style="background:#FFF8EC;">
+      <span class="shop-cat-icon">🍅</span><span class="shop-cat-title" style="color:#7a4a18">Verduras frescas</span>
+    </div>
+    <div class="shop-items">
+      <div class="shop-item"><span class="shop-item-name">Tomates</span><span class="shop-item-qty">3,5 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Morrones (rojo y verde)</span><span class="shop-item-qty">12 unidades</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cebolla</span><span class="shop-item-qty">3 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Zanahoria</span><span class="shop-item-qty">1,5 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Espinaca / acelga</span><span class="shop-item-qty">800 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Zapallito (para Ru)</span><span class="shop-item-qty">1,5 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Lechuga</span><span class="shop-item-qty">4 unidades</span></div>
+      <div class="shop-item"><span class="shop-item-name">Apio</span><span class="shop-item-qty">2 atados</span></div>
+      <div class="shop-item"><span class="shop-item-name">Ajo</span><span class="shop-item-qty">3 cabezas</span></div>
+    </div>
+  </div>
+
+  <div class="shop-category">
+    <div class="shop-cat-header" style="background:#FFFBEC;">
+      <span class="shop-cat-icon">🥫</span><span class="shop-cat-title" style="color:#5a4a18">Verduras en lata / conserva</span>
+    </div>
+    <div class="shop-items">
+      <div class="shop-item"><span class="shop-item-name">Choclo en lata</span><span class="shop-item-qty">6 latas</span></div>
+      <div class="shop-item"><span class="shop-item-name">Tomate triturado en lata</span><span class="shop-item-qty">6 latas (400 g c/u)</span></div>
+      <div class="shop-item"><span class="shop-item-name">Puré de tomate / passata</span><span class="shop-item-qty">2 L (2 tetras)</span></div>
+      <div class="shop-item"><span class="shop-item-name">Atún en lata</span><span class="shop-item-qty">3 latas</span></div>
+      <div class="shop-item"><span class="shop-item-name">Aceitunas (empanadas)</span><span class="shop-item-qty">1 frasco</span></div>
+    </div>
+  </div>
+
+  <div class="shop-category">
+    <div class="shop-cat-header" style="background:#EFF7FF;">
+      <span class="shop-cat-icon">🧀</span><span class="shop-cat-title" style="color:#1a4a7a">Lácteos</span>
+    </div>
+    <div class="shop-items">
+      <div class="shop-item"><span class="shop-item-name">Mozzarella</span><span class="shop-item-qty">800 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Queso rallado</span><span class="shop-item-qty">250 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Leche (para puré)</span><span class="shop-item-qty">1,5 L</span></div>
+      <div class="shop-item"><span class="shop-item-name">Huevos</span><span class="shop-item-qty">24 unidades</span></div>
+    </div>
+  </div>
+
+  <div class="shop-category">
+    <div class="shop-cat-header" style="background:#F5FFF7;">
+      <span class="shop-cat-icon">🫙</span><span class="shop-cat-title" style="color:#1a5a2a">Despensa</span>
+    </div>
+    <div class="shop-items">
+      <div class="shop-item"><span class="shop-item-name">Caldo de pollo (tetra/cubo)</span><span class="shop-item-qty">4 cajitas / 8 cubos</span></div>
+      <div class="shop-item"><span class="shop-item-name">Aceite de girasol</span><span class="shop-item-qty">2 L</span></div>
+      <div class="shop-item"><span class="shop-item-name">Aceite de oliva</span><span class="shop-item-qty">750 ml</span></div>
+      <div class="shop-item"><span class="shop-item-name">Pan rallado</span><span class="shop-item-qty">700 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Cerveza (pollo a la cerveza)</span><span class="shop-item-qty">2 latas 473 ml</span></div>
+      <div class="shop-item"><span class="shop-item-name">Miel</span><span class="shop-item-qty">250 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Salsa de soja</span><span class="shop-item-qty">250 ml</span></div>
+    </div>
+  </div>
+
+  <div class="shop-category">
+    <div class="shop-cat-header" style="background:#FAFAF5;">
+      <span class="shop-cat-icon">🌿</span><span class="shop-cat-title" style="color:#4a4a1a">Condimentos y especias</span>
+    </div>
+    <div class="shop-items">
+      <div class="shop-item"><span class="shop-item-name">Sal entrefina</span><span class="shop-item-qty">1 kg</span></div>
+      <div class="shop-item"><span class="shop-item-name">Pimienta negra</span><span class="shop-item-qty">1 pote</span></div>
+      <div class="shop-item"><span class="shop-item-name">Pimentón dulce y ahumado</span><span class="shop-item-qty">2 potes</span></div>
+      <div class="shop-item"><span class="shop-item-name">Orégano</span><span class="shop-item-qty">1 pote grande</span></div>
+      <div class="shop-item"><span class="shop-item-name">Comino</span><span class="shop-item-qty">1 pote</span></div>
+      <div class="shop-item"><span class="shop-item-name">Ají molido</span><span class="shop-item-qty">1 pote</span></div>
+      <div class="shop-item"><span class="shop-item-name">Laurel en hoja</span><span class="shop-item-qty">1 paquete</span></div>
+      <div class="shop-item"><span class="shop-item-name">Vinagre de manzana</span><span class="shop-item-qty">500 ml</span></div>
+      <div class="shop-item"><span class="shop-item-name">Mayonesa light</span><span class="shop-item-qty">300 g</span></div>
+      <div class="shop-item"><span class="shop-item-name">Mostaza</span><span class="shop-item-qty">1 pote</span></div>
+    </div>
+  </div>
+
+</div>
+</div><!-- /tab-compras -->
+
+<!-- ===== CONSEJOS ===== -->
+<div id="tab-consejos" class="tab-panel">
+<div class="week-label" style="margin-top:0">Tips para que el mes salga redondo</div>
+<div class="tips-grid">
+
+  <div class="tip-card">
+    <h3>⚖️ Calorías: cómo funciona</h3>
+    <ul>
+      <li><strong>Maty</strong> (1,85m / 120kg): necesita ~2.500 kcal para mantener. El objetivo de 1.800–2.000 kcal crea un déficit de ~500 kcal/día → aprox. 2 kg/mes sin pasar hambre.</li>
+      <li><strong>Ru</strong> (1,70m / 95kg): necesita ~2.100 kcal para mantener. Con 1.500–1.700 kcal → déficit similar, ~1,5 kg/mes.</li>
+      <li>Las kcal del menú son almuerzo + cena. Desayuno + snacks deberían sumar 500–700 kcal adicionales.</li>
+    </ul>
+  </div>
+
+  <div class="tip-card">
+    <h3>🛒 Plan de compras en 2 tandas</h3>
+    <ul>
+      <li><strong>Compra 1 (5 jun):</strong> toda la despensa + condimentos + legumbres + carnes semanas 1 y 2 (congelar) + verduras semana 1.</li>
+      <li><strong>Compra 2 (~16 jun):</strong> carnes semanas 3 y 4 + verduras frescas (tomate, morrón, lechuga, zapallito).</li>
+      <li>Las papas, batata, cebolla y zanahoria se compran todas de una: duran todo el mes.</li>
+    </ul>
+  </div>
+
+  <div class="tip-card">
+    <h3>🥩 Estrategia de carnes</h3>
+    <ul>
+      <li>Comprar los cortes enteros y fraccionar en casa es más barato y exacto.</li>
+      <li>Congelar en bolsas con fecha: "milanesas semana 3", "estofado semana 2", etc.</li>
+      <li>La carne picada se puede fraccionar en porciones de 500 g y congelar.</li>
+      <li>El vacío y la tapa de asado se hacen mejor si se marinan la noche anterior.</li>
+    </ul>
+  </div>
+
+  <div class="tip-card">
+    <h3>🫘 Legumbres: trucos</h3>
+    <ul>
+      <li>Poner las lentejas y porotos en remojo la noche anterior reduce el tiempo de cocción a la mitad.</li>
+      <li>Cocinar siempre cantidad doble: se guardan 3 días en heladera o se congelan.</li>
+      <li>Los porotos alubia necesitan hervir fuerte los primeros 10 min para eliminar toxinas.</li>
+    </ul>
+  </div>
+
+  <div class="tip-card">
+    <h3>🌿 Los miércoles de Ru</h3>
+    <ul>
+      <li>Oportunidad perfecta para platos con <strong>zapallito</strong> que Maty no come.</li>
+      <li>El zapallito relleno con carne picada es completo, sabroso y fácil al horno.</li>
+      <li>O simplemente usar los restos del día anterior — Ru come la porción de Maty también.</li>
+    </ul>
+  </div>
+
+  <div class="tip-card">
+    <h3>🍕 Fines de semana</h3>
+    <ul>
+      <li>Si salen a comer afuera, congelar lo planeado para esa noche.</li>
+      <li>Las empanadas se pueden armar el sábado a la tarde y congelar crudas para el mes siguiente.</li>
+      <li>La pizza casera es más liviana que la de delivery: controlás el queso y los ingredientes.</li>
+    </ul>
+  </div>
+
+</div>
+</div><!-- /tab-consejos -->
+
+</div><!-- /main -->
+
+<script>
+function showTab(name, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>
